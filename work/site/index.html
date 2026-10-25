@@ -1,0 +1,732 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="An observational, client-held-out evaluation of a March search-impressions decline proxy, with aggregate results, limitations, and human-reviewed actions.">
+  <meta name="theme-color" content="#f5f7f3">
+  <link rel="canonical" href="https://tahir123-dev.github.io/Ml-track-Start/">
+  <meta property="og:title" content="Ranking a March search-decline proxy">
+  <meta property="og:description" content="A client-held-out model evaluation with public-safe aggregate evidence and a human-reviewed action playbook.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://tahir123-dev.github.io/Ml-track-Start/">
+  <title>Ranking a March search-decline proxy | Tahir123-dev</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #1b3038;
+      --muted: #52666d;
+      --paper: #f5f7f3;
+      --surface: #ffffff;
+      --line: #d7e0dc;
+      --teal: #17685f;
+      --teal-dark: #10544d;
+      --rust: #934329;
+      --soft-teal: #e7f1ed;
+      --soft-rust: #f7ece6;
+      --content-width: 72rem;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-top: 6rem;
+    }
+
+    body {
+      margin: 0;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-size: 1rem;
+      line-height: 1.7;
+    }
+
+    a {
+      color: var(--teal-dark);
+      text-decoration-thickness: 0.08em;
+      text-underline-offset: 0.18em;
+    }
+
+    a:hover {
+      text-decoration-thickness: 0.14em;
+    }
+
+    a:focus-visible {
+      outline: 3px solid var(--rust);
+      outline-offset: 3px;
+      border-radius: 2px;
+    }
+
+    .skip-link {
+      position: absolute;
+      z-index: 5;
+      top: 0.5rem;
+      left: 0.5rem;
+      transform: translateY(-160%);
+      padding: 0.7rem 1rem;
+      border-radius: 0.35rem;
+      background: var(--ink);
+      color: #fff;
+    }
+
+    .skip-link:focus {
+      transform: translateY(0);
+    }
+
+    .site-header {
+      border-bottom: 1px solid var(--line);
+      background: var(--surface);
+    }
+
+    .header-inner,
+    main,
+    .footer-inner {
+      width: min(var(--content-width), calc(100% - 2.5rem));
+      margin-inline: auto;
+    }
+
+    .header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.25rem;
+      padding-block: 1rem;
+    }
+
+    .brand {
+      color: var(--ink);
+      font-weight: 750;
+      letter-spacing: -0.02em;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
+    .nav-list {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      gap: 0.35rem 1rem;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      font-size: 0.88rem;
+    }
+
+    main {
+      padding-block: clamp(2rem, 6vw, 5.5rem);
+    }
+
+    .hero {
+      max-width: 58rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .eyebrow,
+    .section-label {
+      color: var(--teal-dark);
+      font-size: 0.78rem;
+      font-weight: 750;
+      letter-spacing: 0.11em;
+      text-transform: uppercase;
+    }
+
+    h1,
+    h2,
+    h3 {
+      color: var(--ink);
+      line-height: 1.18;
+      text-wrap: balance;
+    }
+
+    h1 {
+      max-width: 17ch;
+      margin: 0.65rem 0 1rem;
+      font-size: clamp(2.25rem, 6vw, 4.3rem);
+      letter-spacing: -0.045em;
+    }
+
+    h2 {
+      margin: 0 0 1rem;
+      font-size: clamp(1.55rem, 3vw, 2.15rem);
+      letter-spacing: -0.03em;
+    }
+
+    h3 {
+      margin: 1.6rem 0 0.5rem;
+      font-size: 1.18rem;
+    }
+
+    p {
+      margin: 0 0 1rem;
+    }
+
+    .dek {
+      max-width: 68ch;
+      color: var(--muted);
+      font-size: clamp(1.1rem, 2.4vw, 1.35rem);
+    }
+
+    .byline {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem 1rem;
+      margin-top: 1.25rem;
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+
+    .abstract,
+    .callout,
+    .figure-card,
+    .reference-card {
+      border: 1px solid var(--line);
+      border-radius: 0.8rem;
+      background: var(--surface);
+    }
+
+    .abstract {
+      max-width: 68rem;
+      margin-top: 2rem;
+      padding: clamp(1.25rem, 4vw, 2rem);
+      border-top: 4px solid var(--teal);
+    }
+
+    .abstract h2 {
+      margin-bottom: 0.65rem;
+      font-size: 1.2rem;
+      letter-spacing: 0;
+    }
+
+    .abstract p {
+      margin-bottom: 0;
+      max-width: 90ch;
+    }
+
+    .scope-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 0.8rem;
+      margin-top: 1.2rem;
+    }
+
+    .scope-item {
+      padding: 1rem;
+      border-left: 3px solid var(--teal);
+      background: var(--soft-teal);
+    }
+
+    .scope-item strong {
+      display: block;
+      margin-bottom: 0.25rem;
+    }
+
+    article {
+      max-width: 68rem;
+    }
+
+    section.paper-section {
+      margin-top: clamp(3rem, 7vw, 5rem);
+      scroll-margin-top: 2rem;
+    }
+
+    .section-intro {
+      max-width: 75ch;
+      color: var(--muted);
+    }
+
+    .callout {
+      margin-block: 1.25rem;
+      padding: 1.1rem 1.25rem;
+      border-left: 4px solid var(--rust);
+      background: var(--soft-rust);
+    }
+
+    .callout p:last-child {
+      margin-bottom: 0;
+    }
+
+    .table-wrap {
+      margin-block: 1.2rem;
+      overflow-x: auto;
+      border: 1px solid var(--line);
+      border-radius: 0.65rem;
+      background: var(--surface);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.94rem;
+      line-height: 1.5;
+    }
+
+    caption {
+      padding: 0.8rem 1rem;
+      color: var(--muted);
+      text-align: left;
+      font-size: 0.88rem;
+    }
+
+    th,
+    td {
+      padding: 0.8rem 0.9rem;
+      border-bottom: 1px solid var(--line);
+      text-align: left;
+      vertical-align: top;
+    }
+
+    thead th {
+      background: #edf2ef;
+      font-weight: 750;
+    }
+
+    tbody tr:last-child th,
+    tbody tr:last-child td {
+      border-bottom: 0;
+    }
+
+    tbody th[scope="row"] {
+      min-width: 10rem;
+      font-weight: 700;
+    }
+
+    .figure-card {
+      margin: 1.5rem 0;
+      padding: clamp(0.8rem, 3vw, 1.5rem);
+    }
+
+    .figure-card img {
+      display: block;
+      width: 100%;
+      height: auto;
+      border-radius: 0.35rem;
+    }
+
+    figcaption {
+      margin-top: 0.9rem;
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+
+    .figure-description {
+      margin-top: 0.65rem;
+      padding-top: 0.65rem;
+      border-top: 1px solid var(--line);
+      color: var(--ink);
+    }
+
+    .metric {
+      font-variant-numeric: tabular-nums;
+      white-space: nowrap;
+    }
+
+    .ranked-list {
+      counter-reset: actions;
+      margin: 1rem 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .ranked-list li {
+      counter-increment: actions;
+      display: grid;
+      grid-template-columns: 2.2rem minmax(0, 1fr);
+      gap: 0.8rem;
+      padding: 1rem 0;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .ranked-list li::before {
+      content: counter(actions, decimal-leading-zero);
+      color: var(--teal-dark);
+      font-size: 1.1rem;
+      font-weight: 800;
+    }
+
+    .ranked-list strong {
+      display: block;
+      margin-bottom: 0.2rem;
+    }
+
+    .tag {
+      display: inline-block;
+      margin: 0.12rem 0.2rem 0.12rem 0;
+      padding: 0.1rem 0.45rem;
+      border: 1px solid #b7cbc4;
+      border-radius: 999px;
+      background: var(--soft-teal);
+      color: var(--teal-dark);
+      font-size: 0.83rem;
+      font-weight: 650;
+    }
+
+    .two-column {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 1.2rem;
+    }
+
+    .two-column > div {
+      padding: 1rem 1.15rem;
+      border: 1px solid var(--line);
+      border-radius: 0.7rem;
+      background: var(--surface);
+    }
+
+    .two-column h3 {
+      margin-top: 0;
+    }
+
+    .reference-list {
+      padding-left: 1.3rem;
+    }
+
+    .reference-list li {
+      margin-bottom: 0.75rem;
+      padding-left: 0.25rem;
+    }
+
+    .small {
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    .site-footer {
+      margin-top: 5rem;
+      border-top: 1px solid var(--line);
+      background: var(--surface);
+    }
+
+    .footer-inner {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 0.8rem 2rem;
+      padding-block: 1.5rem;
+      color: var(--muted);
+      font-size: 0.88rem;
+    }
+
+    @media (max-width: 760px) {
+      .header-inner {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .nav-list {
+        justify-content: flex-start;
+      }
+
+      .scope-grid,
+      .two-column {
+        grid-template-columns: 1fr;
+      }
+
+      .table-wrap {
+        margin-inline: -0.25rem;
+      }
+    }
+
+    @media (max-width: 380px) {
+      .header-inner,
+      main,
+      .footer-inner {
+        width: min(var(--content-width), calc(100% - 1.5rem));
+      }
+
+      .nav-list {
+        gap: 0.25rem 0.7rem;
+        font-size: 0.84rem;
+      }
+
+      th,
+      td {
+        padding: 0.65rem;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html {
+        scroll-behavior: auto;
+      }
+    }
+
+    @media print {
+      body {
+        background: #fff;
+        font-size: 10.5pt;
+      }
+
+      .site-header,
+      .skip-link {
+        display: none;
+      }
+
+      main,
+      .header-inner,
+      .footer-inner {
+        width: 100%;
+      }
+
+      a {
+        color: inherit;
+      }
+
+      .abstract,
+      .callout,
+      .figure-card,
+      .reference-card,
+      .table-wrap {
+        break-inside: avoid;
+        box-shadow: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to paper</a>
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="#top">Applied ML capstone</a>
+      <nav aria-label="Paper sections">
+        <ul class="nav-list">
+          <li><a href="#introduction">Question</a></li>
+          <li><a href="#data">Data</a></li>
+          <li><a href="#methodology">Methods</a></li>
+          <li><a href="#results">Results</a></li>
+          <li><a href="#recommendations">Actions</a></li>
+          <li><a href="#reproducibility">Reproducibility</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <header class="hero" id="top">
+      <p class="eyebrow">Observational model evaluation · March 2026 partition</p>
+      <h1>Does an early-month model rank a later search-decline proxy?</h1>
+      <p class="dek">A client-held-out benchmark, an explicit leakage audit, and a human-reviewed action playbook. The evidence supports careful triage experiments, not automated content changes.</p>
+      <div class="byline">
+        <span><strong>Author:</strong> Tahir123-dev</span>
+        <span><strong>Scope:</strong> One grouped split, 38 represented clients</span>
+        <span><strong>Prepared:</strong> 2026-10-25</span>
+      </div>
+
+      <section class="abstract" aria-labelledby="abstract-title">
+        <h2 id="abstract-title">Abstract</h2>
+        <p>This paper asks whether first-half-of-month search signals can rank client-content records that cross a later within-month impressions-decline proxy. Using one March 2026 slice of the v20260703 warehouse release, a class-balanced logistic model used five first-half features to rank eligible records, with second-half impressions supplying the proxy label. A 75/25 client-grouped split held out 10 clients (15,793 records) and kept them disjoint from 28 training clients. On that test set, the model measured Precision@50/100 of 0.44/0.41 versus 0.12/0.12 for a Week-4 CTR rule, with ROC-AUC of 0.615 versus 0.496. These are single-split observed ranking results for a threshold-derived March proxy, supporting only human-reviewed decision-support experiments, not causal refresh claims, calibrated risk estimates, or generalization across future months.</p>
+      </section>
+
+      <div class="scope-grid" aria-label="Study boundaries">
+        <div class="scope-item"><strong>Observed unit</strong>Eligible client-content aggregate, not an individual search query.</div>
+        <div class="scope-item"><strong>Validation</strong>Entire clients held out; test records come from the same March partition.</div>
+        <div class="scope-item"><strong>Intended use</strong>Decision-support for human review only; no production automation.</div>
+      </div>
+    </header>
+
+    <article>
+      <section class="paper-section" id="introduction" aria-labelledby="introduction-title">
+        <p class="section-label">01 · Question</p>
+        <h2 id="introduction-title">A ranking question, not a refresh-effect claim</h2>
+        <p class="section-intro">Among client-content records with at least 100 first-half impressions in March 2026, do first-half search features rank records that meet a second-half impressions-decline proxy above a Week-4 CTR review rule when entire clients are held out?</p>
+        <p>The decision this study can inform is whether a small, human-reviewed triage experiment is worth evaluating. It cannot determine whether a particular page should be edited, or whether an edit would cause recovery.</p>
+
+        <div class="callout">
+          <p><strong>Context from the March 2026 FlyRank report.</strong> The report describes differences in mean word count and page age between growing and declining groups (p. 6) and reports a 7.88:1 growth-to-decline ratio in its 31-90-day freshness band (p. 9). Its trend labels are contemporaneous, and the reported 283:1 ratio in the 361+ day band depends on one declining page.</p>
+          <p>Constructive methodology questions follow: could a prospective label and within-brand checks distinguish description from prediction for the first finding? Could counts and uncertainty by brand, plus a prospective comparison, address the sparse freshness tail and selection into refresh? These observations motivate questions; they are not causal evidence that refresh timing produces growth. The <a href="https://github.com/Tahir123-dev/Ml-track-Start/blob/main/work/notebooks/w06_validation_audit.ipynb">Week-6 validation audit</a> documents the questions in more detail.</p>
+        </div>
+      </section>
+
+      <section class="paper-section" id="data" aria-labelledby="data-title">
+        <p class="section-label">02 · Data</p>
+        <h2 id="data-title">A large release, one monthly partition</h2>
+        <p>The source was the gated production warehouse release <strong>v20260703</strong>, available through the <a href="https://huggingface.co/datasets/FlyRank/internship-warehouse">FlyRank internship dataset repository</a>. Its daily fact table contains 78,835,655 report-date by client by content rows from 2025-01-27 through 2026-06-30. That is the size and span of the release table, not the amount analyzed here: the Week-5 query read only the March 2026 partition.</p>
+        <div class="table-wrap">
+          <table>
+            <caption>Primary study data scope</caption>
+            <tbody>
+              <tr><th scope="row">Source table</th><td><code>fact_content_daily_performance</code> only; no dimension or fixed-window query-table joins.</td></tr>
+              <tr><th scope="row">Feature window</th><td>2026-03-01 through 2026-03-15.</td></tr>
+              <tr><th scope="row">Outcome window</th><td>2026-03-16 through 2026-03-31.</td></tr>
+              <tr><th scope="row">Eligibility</th><td>At least 100 first-half impressions; lower-volume records excluded because short-window ratios are less stable.</td></tr>
+              <tr><th scope="row">Eligible analysis rows</th><td>77,540 client-content aggregates across 38 represented clients.</td></tr>
+              <tr><th scope="row">Train / held-out</th><td>61,747 / 15,793 records; 28 / 10 disjoint clients.</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>Public artifacts contain aggregate metrics and figures only. No client identifiers, URLs, titles, private queries, or record-level warehouse examples are published. Access to the warehouse release is gated; credentials are not stored in this repository.</p>
+        <p><strong>Separate prototype:</strong> the Week-7 playbook uses a 30,000-row bundled anonymized starter snapshot representing 32 clients. Those action-mix counts are shown separately and are not combined with the warehouse model results.</p>
+      </section>
+
+      <section class="paper-section" id="methodology" aria-labelledby="methodology-title">
+        <p class="section-label">03 · Methodology</p>
+        <h2 id="methodology-title">The label and split set the claim boundary</h2>
+        <h3>Outcome proxy</h3>
+        <p>An eligible record is labeled as an observed decline when second-half impressions are less than 80% of first-half impressions. This is a threshold-derived, within-month proxy. It is not an editorial judgment, a verified loss of user value, or a post-refresh recovery outcome.</p>
+
+        <h3>Features and leakage audit</h3>
+        <div class="table-wrap">
+          <table>
+            <caption>Feature availability and leakage checks</caption>
+            <thead><tr><th scope="col">Field or signal</th><th scope="col">Use</th><th scope="col">Audit note</th></tr></thead>
+            <tbody>
+              <tr><th scope="row">First-half impressions, clicks, average position, active search days, impression standard deviation</th><td>Model inputs</td><td>All measured in March 1-15, before the outcome window.</td></tr>
+              <tr><th scope="row">Second-half impressions</th><td>Label only</td><td>Outcome-derived; excluded from the feature matrix.</td></tr>
+              <tr><th scope="row">Client grouping key</th><td>Split only</td><td>Used to keep clients disjoint; never supplied to the estimator.</td></tr>
+              <tr><th scope="row">First-half impressions in the label denominator</th><td>Eligibility and feature</td><td>Related to label construction by design. This can make volume and low-count volatility influential; it is a construct limitation, not a future-window feature leak.</td></tr>
+              <tr><th scope="row">Dimensions and fixed-window query table</th><td>Not joined</td><td>No additional fields or future periods were introduced.</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>Model, comparator, and validation</h3>
+        <p>The model is median imputation with missing indicators, standard scaling, and class-balanced logistic regression (<code>max_iter=1000</code>, seed 42). Its score is used to order review candidates; class weighting means the score is <strong>not presented as a calibrated probability</strong>.</p>
+        <p>The Week-4 CTR rule selects first-half impressions of at least 500, average position from 1 to 20, and CTR below 0.5%; its score is <code>impressions × (0.5 - CTR) / 100</code>, with CTR stored in percentage points. It selected 4,378 held-out candidates. The rule was designed to surface CTR opportunities, not to forecast this decline proxy. The comparison uses the same held-out rows but does not test the rule's original intended use.</p>
+        <p>One 75/25 <code>GroupShuffleSplit</code> by client (<code>random_state=42</code>) kept all 10 test clients out of training. Test base rate was 0.147. The split is grouped by client, not a later-month test: both train and test represent the same March partition. No repeated split, time-forward evaluation, or prospective test was run.</p>
+      </section>
+
+      <section class="paper-section" id="results" aria-labelledby="results-title">
+        <p class="section-label">04 · Results</p>
+        <h2 id="results-title">Observed ranking on the same held-out clients</h2>
+        <p class="section-intro">The plot shows Precision@K as both absolute counts and fractions. The dashed reference is the held-out decline-proxy base rate. Direct labels and the caption make the comparison readable without relying on color alone.</p>
+        <figure class="figure-card">
+          <img src="assets/capstone_topk_precision.svg" alt="Horizontal bar chart comparing the Week-4 CTR rule and logistic regression on the same held-out clients. At top 50, the rule has 6 of 50 positive labels (0.12) and logistic regression has 22 of 50 (0.44). At top 100, the rule has 12 of 100 (0.12) and logistic regression has 41 of 100 (0.41). A dashed line marks the test base rate of 0.147.">
+          <figcaption><strong>Figure 1.</strong> Measured Precision@50 and Precision@100 on the client-held-out March test records. Counts are shown in each bar label; the dashed line marks the 0.147 test base rate. This single split does not estimate future-month stability.</figcaption>
+        </figure>
+        <p>On this split, the learned ranker placed a larger fraction of decline-proxy labels in its top 50 and top 100 than the CTR heuristic. That is a directional comparison for this proxy only. It does not show that any selected record is recoverable or that a content action would change its outcome.</p>
+        <div class="table-wrap">
+          <table>
+            <caption>Other ranking metrics measured on the same 15,793 held-out records</caption>
+            <thead><tr><th scope="col">Metric</th><th scope="col">Week-4 CTR rule</th><th scope="col">Logistic regression</th></tr></thead>
+            <tbody>
+              <tr><th scope="row">ROC-AUC</th><td class="metric">0.496</td><td class="metric">0.615</td></tr>
+              <tr><th scope="row">Average precision</th><td class="metric">0.148</td><td class="metric">0.226</td></tr>
+              <tr><th scope="row">Test decline-proxy base rate</th><td colspan="2" class="metric">0.147</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <h3>Aggregate error review</h3>
+        <p>At a fixed 0.5 classification cutoff, the model produced 4,206 false positives and 1,096 false negatives. These aggregate counts motivate human review and threshold evaluation; the cutoff was not tuned for a business decision. Record-level warehouse examples are deliberately withheld.</p>
+
+        <h3>A separate action-playbook prototype</h3>
+        <p>This figure comes from the bundled starter snapshot, not the March warehouse benchmark. It describes the primary archetype mix in a top-500 held-out review queue; it is not a count of recovered pages or an independent validation of the March model.</p>
+        <figure class="figure-card">
+          <img src="assets/w07_action_mix.png" alt="Aggregate action mix for the separate Week-7 starter-data prototype's 500-item held-out review queue: 487 visible_low_ctr, 7 observed_decline, and 6 general_review.">
+          <figcaption><strong>Figure 2.</strong> Aggregate primary archetype counts in the Week-7 prototype queue (500 held-out items). The queue CSV is regenerated locally and is not committed; only aggregate metrics and this figure are public.</figcaption>
+        </figure>
+      </section>
+
+      <section class="paper-section" id="limitations" aria-labelledby="limitations-title">
+        <p class="section-label">05 · Limitations</p>
+        <h2 id="limitations-title">What these measurements cannot establish</h2>
+        <ul>
+          <li><strong>Proxy validity:</strong> an impressions ratio is not a verified content-quality outcome, an editorial diagnosis, or proof that a refresh can recover performance.</li>
+          <li><strong>Temporal scope:</strong> one March partition and one client-grouped split do not establish performance in later months or changing conditions.</li>
+          <li><strong>Denominator coupling:</strong> first-half impressions are both a feature and part of eligibility and label construction; low-volume variability can affect the proxy.</li>
+          <li><strong>Uncertainty:</strong> no repeated holdouts or confidence intervals are available; the displayed differences are descriptive observations from one split.</li>
+          <li><strong>Comparator scope:</strong> the Week-4 CTR rule targets a different review opportunity, so its lower score here does not establish that its intended purpose failed.</li>
+          <li><strong>Separate playbook data:</strong> the Week-7 starter prototype has rolling feature windows that may overlap the label window; it is not future-period or causal evidence.</li>
+          <li><strong>Operational scope:</strong> scores are not calibrated probabilities, and no cost, value, or return-on-investment estimate was measured.</li>
+        </ul>
+        <div class="callout">
+          <p><strong>Claim rewrite.</strong> Avoid: “The model predicts content decay and identifies pages that need refreshing.” Supported wording: “In one client-held-out March split, the model measured a higher share of records meeting a defined later-month impressions-decline proxy among its top-ranked records than a Week-4 CTR rule. This observed result may support a human-reviewed triage experiment; it does not estimate refresh benefit or future-month performance.”</p>
+        </div>
+      </section>
+
+      <section class="paper-section" id="recommendations" aria-labelledby="recommendations-title">
+        <p class="section-label">06 · Ranked recommendations</p>
+        <h2 id="recommendations-title">A practical review playbook, not an automation plan</h2>
+        <p class="section-intro">The order below is a human-triage priority, not a measured ranking of causal lift. Each cue should be checked against current search context, page purpose, and a reviewer decision.</p>
+        <ol class="ranked-list">
+          <li>
+            <div><strong>Visible demand with low CTR <span class="tag">visible_low_ctr</span></strong>Check query intent and title/snippet alignment; verify that the page answers the demand before suggesting copy changes. The separate Week-7 starter-data queue contained 487 items in this primary archetype.</div>
+          </li>
+          <li>
+            <div><strong>Observed decline proxy <span class="tag">observed_decline</span></strong>Check seasonality, demand, technical changes, tracking, and search-result changes before considering a refresh. The proxy label is not a recoverability score; the prototype queue contained 7 items in this archetype.</div>
+          </li>
+          <li>
+            <div><strong>Aging visible content <span class="tag">aging_visible</span></strong>Review freshness only when evidence suggests material change or stale facts. The paper's freshness-band observation is contextual and does not establish a universal refresh cadence.</div>
+          </li>
+          <li>
+            <div><strong>Thin content with visible impressions <span class="tag">thin_visible</span></strong>Review topic coverage and user intent; do not add length without a clear information need.</div>
+          </li>
+          <li>
+            <div><strong>Engagement concern <span class="tag">engagement_check</span></strong>Check readability, page experience, measurement coverage, and relevant context before proposing changes.</div>
+          </li>
+          <li>
+            <div><strong>Insufficient or mixed evidence <span class="tag">general_review</span></strong>Monitor or route to manual triage; the separate prototype queue contained 6 items in this category.</div>
+          </li>
+        </ol>
+
+        <h3>Human review and no-go cases</h3>
+        <div class="two-column">
+          <div>
+            <h3>Review before action</h3>
+            <ul>
+              <li>Verify the underlying signal, time window, and current page context.</li>
+              <li>Record a reason code and reviewer decision; note uncertainty or conflicting evidence.</li>
+              <li>Estimate reviewer minutes and any content-production cost before a pilot.</li>
+              <li>Document an independently verified outcome; do not treat rank or score as a result.</li>
+            </ul>
+          </div>
+          <div>
+            <h3>Do not automate</h3>
+            <ul>
+              <li>Publishing, deleting, redirecting, or making irreversible edits.</li>
+              <li>Legal, medical, safety, brand-sensitive, or otherwise high-impact content decisions.</li>
+              <li>Actions on low-volume records or from the uncalibrated score alone.</li>
+              <li>Universal refresh scheduling, guaranteed recovery claims, or production decisions.</li>
+            </ul>
+          </div>
+        </div>
+
+        <h3>Cost, monitoring, and retraining</h3>
+        <p>There is no measured ROI in this study. A future, approved pilot could compare reviewer time and content cost with independently verified useful changes, while keeping a human decision record. Monitor label/base-rate shifts, Precision@K against the base rate, errors by volume band, reviewer acceptance, and outcome quality. Revalidate when the label, feature window, data source, or client mix changes; retrain only after enough new time periods and clients are available for a new grouped and time-aware evaluation. No numeric production trigger is established here.</p>
+      </section>
+
+      <section class="paper-section" id="reproducibility" aria-labelledby="reproducibility-title">
+        <p class="section-label">07 · Reproducibility</p>
+        <h2 id="reproducibility-title">Inspect the notebooks and aggregate receipts</h2>
+        <ul>
+          <li><a href="https://github.com/Tahir123-dev/Ml-track-Start/blob/main/work/notebooks/w05_model.ipynb">Week-5 model notebook</a>: source analysis and saved aggregate outputs; authorized warehouse access is required to rerun the gated query.</li>
+          <li><a href="https://github.com/Tahir123-dev/Ml-track-Start/blob/main/work/notebooks/w06_validation_audit.ipynb">Week-6 validation audit</a>: client-held-out comparison, leakage review, and aggregate failure patterns.</li>
+          <li><a href="https://github.com/Tahir123-dev/Ml-track-Start/blob/main/work/notebooks/w07_action_playbook.ipynb">Week-7 action playbook</a>: separate starter-data prototype and local queue export.</li>
+          <li><a href="https://github.com/Tahir123-dev/Ml-track-Start/blob/main/work/notebooks/capstone.ipynb">Capstone notebook</a> and <a href="https://github.com/Tahir123-dev/Ml-track-Start/blob/main/work/outputs/capstone_metrics.json">aggregate metrics receipt</a>.</li>
+          <li><a href="https://github.com/Tahir123-dev/Ml-track-Start/blob/main/work/outputs/w07_playbook_metrics.json">Week-7 aggregate metrics</a> and <a href="https://github.com/Tahir123-dev/Ml-track-Start/blob/main/work/figures/w07_action_mix.png">action-mix figure</a>.</li>
+          <li><a href="https://github.com/Tahir123-dev/Ml-track-Start/blob/main/DATA_USE.md">Data-use and public-safety rules</a>.</li>
+        </ul>
+        <p>The warehouse release is gated. Reproduction of the Week-5 model requires approved access and the authorized read token at runtime; do not commit credentials or warehouse extracts. The capstone notebook regenerates the aggregate receipt and paper figures without downloading record-level data. The Week-7 ranked queue CSV is ignored by Git and is not included in the Pages artifact.</p>
+        <p>This static page uses semantic sections, visible chart descriptions, and local assets; it loads no third-party scripts, analytics, or remote fonts. Reporting structure was informed by ICMJE manuscript guidance and STROBE's transparency checklist; STROBE is not used as a study-quality score. Complex-image and responsive-layout choices follow W3C WAI/WCAG guidance. The chart explicitly states the split and base-rate reference because visual comparisons can mislead when their context is hidden.</p>
+      </section>
+
+      <section class="paper-section" id="acknowledgments" aria-labelledby="acknowledgments-title">
+        <p class="section-label">08 · Acknowledgments and data credit</p>
+        <h2 id="acknowledgments-title">Acknowledgments</h2>
+        <p><strong>Built on the <a href="https://flyrank.ai/">FlyRank ML Internship dataset</a>.</strong> Thank you to the FlyRank team for the internship dataset and research context. Public artifacts are limited to aggregate results and figures under the repository's data-use rules.</p>
+        <h3>Reporting and design references</h3>
+        <ol class="reference-list">
+          <li><a href="https://www.icmje.org/recommendations/browse/manuscript-preparation/preparing-for-submission.html">International Committee of Medical Journal Editors. Preparing a Manuscript for Submission.</a> Used as general guidance for an explicit question, transparent methods, and scoped results; this is not a medical study.</li>
+          <li><a href="https://www.strobe-statement.org/">STROBE Statement.</a> A reporting checklist for observational research, not a study-quality scoring instrument.</li>
+          <li><a href="https://www.w3.org/TR/WCAG22/">W3C. Web Content Accessibility Guidelines (WCAG) 2.2.</a></li>
+          <li><a href="https://www.w3.org/WAI/tutorials/images/complex/">W3C WAI. Complex Images.</a> Guidance informed the adjacent chart captions and text descriptions.</li>
+          <li><a href="https://distill.pub/2016/misread-tsne/">Wattenberg, M., Viégas, F., and Johnson, I. “How to Use t-SNE Effectively.” Distill, 2016.</a> An example of why visual patterns need explicit interpretive limits.</li>
+          <li><a href="https://docs.github.com/en/pages/getting-started-with-github-pages/using-custom-workflows-with-github-pages">GitHub Docs. Using custom workflows with GitHub Pages.</a></li>
+          <li><a href="https://github.com/Tahir123-dev/Ml-track-Start/blob/main/docs/flyrank-seo-research-march-2026.pdf">FlyRank SEO Research, March 2026.</a> Cited only for contextual observations described above.</li>
+          <li><a href="https://huggingface.co/datasets/FlyRank/internship-warehouse">FlyRank internship warehouse dataset repository.</a> Gated release; access is subject to approval.</li>
+        </ol>
+      </section>
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span>Capstone research artifact · Public-safe aggregate reporting</span>
+      <a href="#top">Back to top</a>
+    </div>
+  </footer>
+</body>
+</html>

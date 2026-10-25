@@ -1,0 +1,53 @@
+{
+  "scope": "One March 2026 warehouse partition; one client-grouped held-out split; aggregate-only.",
+  "warehouse_release": "v20260703",
+  "source_table": "fact_content_daily_performance",
+  "release_table_rows": 78835655,
+  "release_date_span": "2025-01-27 through 2026-06-30",
+  "queried_partition": "2026-03-01 through 2026-03-31",
+  "eligible_rows": 77540,
+  "train": {
+    "rows": 61747,
+    "clients": 28
+  },
+  "test": {
+    "rows": 15793,
+    "clients": 10,
+    "decline_proxy_base_rate": 0.147
+  },
+  "label": "Second-half impressions < 80% of first-half impressions; eligible first-half impressions >= 100.",
+  "features": [
+    "first-half impressions",
+    "first-half clicks",
+    "first-half average position",
+    "active search days",
+    "first-half impression standard deviation"
+  ],
+  "metrics": {
+    "logistic_regression": {
+      "Precision@50": 0.44,
+      "Precision@100": 0.41,
+      "ROC-AUC": 0.615,
+      "Average precision": 0.226
+    },
+    "week4_ctr_rule": {
+      "Precision@50": 0.12,
+      "Precision@100": 0.12,
+      "ROC-AUC": 0.496,
+      "Average precision": 0.148
+    },
+    "false_positives_at_0.5_cutoff": 4206,
+    "false_negatives_at_0.5_cutoff": 1096
+  },
+  "week7_prototype": {
+    "dataset": "separate bundled anonymized starter snapshot",
+    "queue_rows": 500,
+    "action_mix": {
+      "general_review": 6,
+      "observed_decline": 7,
+      "visible_low_ctr": 487
+    },
+    "metric_scope": "held-out clients only; rolling feature window may overlap label window; not future-period or causal evidence"
+  },
+  "privacy": "No row-level records, client IDs, URLs, titles, or queries are included."
+}

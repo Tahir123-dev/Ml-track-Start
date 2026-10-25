@@ -518,7 +518,7 @@
 
       <section class="abstract" aria-labelledby="abstract-title">
         <h2 id="abstract-title">Abstract</h2>
-        <p>This paper asks whether first-half-of-month search signals can rank client-content records that cross a later within-month impressions-decline proxy. Using one March 2026 slice of the v20260703 warehouse release, a class-balanced logistic model used five first-half features to rank eligible records, with second-half impressions supplying the proxy label. A 75/25 client-grouped split held out 10 clients (15,793 records) and kept them disjoint from 28 training clients. On that test set, the model measured Precision@50/100 of 0.44/0.41 versus 0.12/0.12 for a Week-4 CTR rule, with ROC-AUC of 0.615 versus 0.496. These are single-split observed ranking results for a threshold-derived March proxy, supporting only human-reviewed decision-support experiments, not causal refresh claims, calibrated risk estimates, or generalization across future months.</p>
+        <p>Motivated by FlyRank's March 2026 content research and the practical need to prioritize human review as search visibility shifts, this paper asks whether first-half signals can rank client-content records that cross a later within-month impressions-decline proxy. Using one March 2026 slice of the v20260703 warehouse release, a class-balanced logistic model used five first-half features to rank eligible records, with second-half impressions supplying the proxy label. A 75/25 client-grouped split held out 10 clients (15,793 records) and kept them disjoint from 28 training clients. On that test set, the model measured Precision@50/100 of 0.44/0.41 versus 0.12/0.12 for a Week-4 CTR rule, with ROC-AUC of 0.615 versus 0.496. These are single-split observed ranking results for a threshold-derived March proxy, supporting only human-reviewed decision-support experiments, not causal refresh claims, calibrated risk estimates, or generalization across future months.</p>
       </section>
 
       <div class="scope-grid" aria-label="Study boundaries">
@@ -532,6 +532,7 @@
       <section class="paper-section" id="introduction" aria-labelledby="introduction-title">
         <p class="section-label">01 · Question</p>
         <h2 id="introduction-title">A ranking question, not a refresh-effect claim</h2>
+        <p>FlyRank's March 2026 research describes differences in page age and word count between growing and declining groups, alongside freshness-band growth-to-decline ratios. These observations connect to a practical content problem: when search visibility shifts and analyst time is limited, which pages merit a closer look? The reported patterns are descriptive, not evidence that changing a page or its freshness causes recovery.</p>
         <p class="section-intro">Among client-content records with at least 100 first-half impressions in March 2026, do first-half search features rank records that meet a second-half impressions-decline proxy above a Week-4 CTR review rule when entire clients are held out?</p>
         <p>The decision this study can inform is whether a small, human-reviewed triage experiment is worth evaluating. It cannot determine whether a particular page should be edited, or whether an edit would cause recovery.</p>
 

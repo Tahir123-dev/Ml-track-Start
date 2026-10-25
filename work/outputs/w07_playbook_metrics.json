@@ -1,0 +1,39 @@
+{
+  "features": [
+    "impressions_90d",
+    "clicks_90d",
+    "avg_position",
+    "days_with_impressions",
+    "ctr"
+  ],
+  "human_review_required": true,
+  "label": "trend_direction == down (threshold-derived observed decline proxy)",
+  "metric_scope": "held-out clients only; rolling feature window may overlap label window; not future-period or causal evidence",
+  "metrics": {
+    "average_precision": 0.575356336789304,
+    "base_rate": 0.516514406184118,
+    "client_overlap": 0,
+    "eligible_rows": 30000,
+    "precision_at_100": 0.78,
+    "precision_at_50": 0.84,
+    "roc_auc": 0.562328864103781,
+    "test_clients": 8,
+    "test_rows": 7115,
+    "train_clients": 24,
+    "train_rows": 22885
+  },
+  "model": "median-imputed, standardized, class-balanced logistic regression",
+  "notebook": "work/notebooks/w07_action_playbook.ipynb",
+  "primary_archetype_counts_in_queue": {
+    "general_review": 6,
+    "observed_decline": 7,
+    "visible_low_ctr": 487
+  },
+  "privacy": "CSV contains pseudonymous lookup IDs and is git-ignored; JSON and figure contain aggregate results only",
+  "production_ready": false,
+  "queue_rows": 500,
+  "queue_scope": "top-scored held-out rows; model score ranks observed decline-label agreement, not refresh benefit",
+  "reason_codes": "transparent review cues; one primary archetype and pipe-delimited applicable reasons",
+  "source": "bundled anonymized starter snapshot; eligible items require impressions_90d > 0 and content_age_days >= 90",
+  "split": "one GroupShuffleSplit by pseudonymous client_id; test_size=0.25; random_state=42"
+}
